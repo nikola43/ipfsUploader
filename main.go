@@ -9,7 +9,9 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"path/filepath"
 	"time"
+
 	"github.com/joho/godotenv"
 )
 
@@ -42,15 +44,16 @@ func main() {
 		return
 	}
 	filePath := os.Args[1]
+	filename := filepath.Base(filePath)
 
 	const baseURL = "https://coffee-magnetic-rattlesnake-502.mypinata.cloud/ipfs/"
 	ipfsURL := "https://api.pinata.cloud/pinning/pinFileToIPFS"
-	
+
 	// Upload file to IPFS
 	// New multipart writer.
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	fw, err := writer.CreateFormFile("file", "img.png")
+	fw, err := writer.CreateFormFile("file", filename)
 	if err != nil {
 		panic(err)
 	}
